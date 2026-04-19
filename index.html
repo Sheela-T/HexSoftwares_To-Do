@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal To-Do</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>Royal Tasks</h1>
+    </header>
+
+
+    <main>
+        <div class="container">
+            <h1>🖤 My Tasks</h1>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <input type="text" id="taskInput" placeholder="Enter a new task...">
+                <button id="addBtn">Add</button>
+            </div>
+
+            <!-- Task List -->
+            <ul id="taskList"></ul>
+            <div class="footer">
+                <span id="taskCount">0 tasks</span>
+
+                <div class="filters">
+                    <button onclick="setFilter('all')">All</button>
+                    <button onclick="setFilter('active')">Active</button>
+                    <button onclick="setFilter('completed')">Completed</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-container">
+
+            <section class="info-box">
+                <h3>About This App</h3>
+                <p>This To-Do List app helps you manage daily tasks efficiently with a clean and minimal interface.</p>
+            </section>
+
+            <section class="info-box">
+                <h3>Features</h3>
+                <ul>
+                    <li>Add, edit, delete tasks</li>
+                    <li>Mark tasks as completed</li>
+                    <li>Filter tasks (All / Active / Completed)</li>
+                    <li>Task counter</li>
+                    <li>Data persistence using Local Storage support</li>
+                </ul>
+            </section>
+
+            <section class="info-box">
+                <h3>How to Use</h3>
+                <ul>
+                    <li>Enter task → click Add / press Enter</li>
+                    <li>Use checkbox to mark tasks as completed</li>
+                    <li>Double-click a task to edit</li>
+                    <li>Use filters to organize and view tasks</li>
+                </ul>
+            </section>
+
+            <section class="info-box">
+                <h3>Developer</h3>
+                <p>Developed by <strong>Sheela</strong></p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer-main">
+        <p>© 2026 Sheela | Built with HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
