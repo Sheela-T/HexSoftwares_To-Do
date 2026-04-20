@@ -12,6 +12,7 @@
 
     <header class="header">
         <h1>Royal Tasks</h1>
+        <button id="themeToggle">🌙</button>
     </header>
 
 
@@ -34,6 +35,12 @@
                     <button onclick="setFilter('all')">All</button>
                     <button onclick="setFilter('active')">Active</button>
                     <button onclick="setFilter('completed')">Completed</button>
+                </div>
+                
+                <p id="taskStats"></p>
+
+                <div class="progress-bar">
+                    <div id="progressFill"></div>
                 </div>
             </div>
         </div>

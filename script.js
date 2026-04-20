@@ -16,6 +16,11 @@ function addTask() {
         return;
     }
 
+    if (tasks.some(task => task.text === text)) {
+        alert("Task already exists");
+        return;
+    }
+
     const newTask = {
         id: Date.now(),
         text: text,
@@ -50,6 +55,9 @@ function renderTasks() {
         const li = document.createElement("li");
         li.className = "task";
 
+        li.setAttribute("draggable", "true");
+        li.dataset.id = task.id;
+
         if (task.completed) li.classList.add("completed");
 
         li.innerHTML = `
@@ -61,16 +69,22 @@ function renderTasks() {
             <button onclick="deleteTask(${task.id})">✖</button>
         `;
 
+        li.addEventListener("dragstart", () => {
+            li.classList.add("dragging");
+        });
+
+        li.addEventListener("dragend", () => {
+            li.classList.remove("dragging");
+            updateOrder();
+        });
+
         taskList.appendChild(li);
 
-        // THIS PART IS MISSING OR NOT WORKING PROPERLY
-        //setTimeout(() => {
-        //    li.classList.add("show");
-        //}, 10);
-        console.log(filteredTasks);
     });
 
     updateTaskCount();
+    updateStats();
+    
 }
 
 // Toggle Task
@@ -136,7 +150,14 @@ function editTask(id) {
     renderTasks();
 }
 
-loadTasks();
+function updateOrder() {
+    const ids = [...taskList.children].map(li => Number(li.dataset.id));
+
+    tasks.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+
+    saveTasks();
+}
+
 // Event Listener
 addBtn.addEventListener("click", addTask);
 taskInput.addEventListener("keypress", function (e) {
@@ -144,3 +165,48 @@ taskInput.addEventListener("keypress", function (e) {
         addTask();
     }
 });
+
+window.onload = function () {
+    taskInput.focus();
+    loadTasks();
+};
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "light") {
+    document.body.classList.add("light");
+}
+
+taskList.addEventListener("dragover", (e) => {
+    e.preventDefault();
+
+    const dragging = document.querySelector(".dragging");
+    const siblings = [...taskList.querySelectorAll(".task:not(.dragging)")];
+
+    const nextSibling = siblings.find(sibling => {
+        return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
+    });
+
+    taskList.insertBefore(dragging, nextSibling);
+});
+
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+
+    const theme = document.body.classList.contains("light") ? "light" : "dark";
+    localStorage.setItem("theme", theme);
+});
+
+function updateStats() {
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+
+    const percent = total === 0 ? 0 : (completed / total) * 100;
+
+    document.getElementById("taskStats").innerText =
+        `Completed: ${Math.round(percent)}% (${completed}/${total})`;
+
+    document.getElementById("progressFill").style.width = percent + "%";
+}
